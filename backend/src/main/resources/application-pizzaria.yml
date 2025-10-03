@@ -1,18 +1,18 @@
-# Configuração do Sistema TimeRight - TCC
+# Configuração do Sistema Pizzaria F - TCC
 server:
   port: 8080
 
 spring:
   # Configuração SQL Server (Produção)
   datasource:
-    url: jdbc:sqlserver://localhost:1433;databaseName=timeright_db;encrypt=false
+    url: jdbc:sqlserver://localhost:1433;databaseName=pizzariaf_db;encrypt=false
     username: sa
     password: 123456
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   
   # Configuração H2 (Desenvolvimento - descomente para usar)
   # datasource:
-  #   url: jdbc:h2:mem:timeright_db
+  #   url: jdbc:h2:mem:pizzariaf_db
   #   driver-class-name: org.h2.Driver
   #   username: sa
   #   password: 
