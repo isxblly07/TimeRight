@@ -10,7 +10,7 @@ const apiClient = axios.create({
 
 export const authAPI = {
   // Realiza login do usuário
-  login: (credentials) => apiClient.post('/auth/login', credentials),
+  login: (credentials) => apiClient.post('/api/auth/login', credentials),
   
   // Registra novo usuário
   register: (userData) => apiClient.post('/auth/register', userData),
