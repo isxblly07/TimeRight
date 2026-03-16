@@ -2,7 +2,7 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastro - Escolha o Tipo</title>
+    <title>Cadastro Cliente - Salão Rosa</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -18,14 +18,16 @@
 
     <main class="container">
         <section class="pagina">
-            <h2>Criar Conta</h2>
-            <p>Você deseja se cadastrar como:</p>
+            <h2>Cadastro de Cliente</h2>
+            <form id="formCadastroUser">
+                <input type="text" placeholder="Nome Completo" required>
+                <input type="tel" placeholder="Telefone/WhatsApp" required>
+                <input type="email" placeholder="E-mail" required>
+                <input type="password" placeholder="Crie uma Senha" required>
+                <button type="submit">Cadastrar e Agendar</button>
+            </form>
             <br>
-            <button onclick="location.href='cadastro-user.html'">Cliente (Agendar)</button>
-            <br><br>
-            <button onclick="location.href='cadastro-adm.html'" style="background-color: #d1d1d1;">Administrador (Salão)</button>
-            <br><br>
-            <a href="login.html">Já tenho conta</a>
+            <a href="cadastro.html">Voltar</a>
         </section>
     </main>
     <footer>
@@ -33,5 +35,6 @@
         <p>Rua da Beleza, 123 - Centro</p>
         <p>Siga-nos: @timeright_</p>
     </footer>
+    <script src="script.js"></script>
 </body>
 </html>

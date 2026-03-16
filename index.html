@@ -2,23 +2,35 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Salão de Beleza - Início</title>
+    <title>TimeRight | Realçando sua Essência</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <nav>
-        <a href="index.html">Início</a>
-        <a href="agendar.html">Agendar Online</a>
-        <a href="login.html">Painel Admin</a>
+    <nav class="navbar-principal">
+        <div class="logo">TimeRight</div>
+        <div class="links">
+            <a href="index.html">Início</a>
+            <a href="login.html">Entrar</a>
+            <a href="cadastro.html">Criar Conta</a>
+        </div>
     </nav>
 
-    <main class="container">
-        <section class="pagina">
-            <h1>Salão Rosa Bebê</h1>
-            <p>Sua beleza em primeiro lugar. Agende seu horário de forma rápida!</p>
-            <br>
-            <button onclick="location.href='agendar.html'">Quero Agendar!</button>
+    <main>
+        <section class="hero">
+            <div class="hero-conteudo">
+                <h1>Sua beleza é única, <br><span>nossa arte é realçá-la.</span></h1>
+                <p>Um refúgio de autocuidado e bem-estar em tons de rosa. <br> Reserve o seu momento especial hoje mesmo.</p>
+                <button class="btn-principal" onclick="location.href='login.html'">Agendar Agora</button>
+            </div>
         </section>
+
+       
     </main>
+
+    <footer>
+        <p>&copy; 2026 TimeRight - Todos os direitos reservados.</p>
+        <p>Rua da Beleza, 123 - Centro</p>
+        <p>Siga-nos: @timeright_</p>
+    </footer>
 </body>
 </html>

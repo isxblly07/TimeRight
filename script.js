@@ -93,3 +93,25 @@ function carregarParaEditar(index) {
     
     document.getElementById('btnSalvar').innerText = "Atualizar Dados";
 }
+
+// Lógica para Cadastro de Usuário
+const formUser = document.getElementById('formCadastroUser');
+if (formUser) {
+    formUser.addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert("Cadastro de Cliente realizado! Agora você pode fazer login.");
+        window.location.href = "login.html"; // Redireciona para o login
+    });
+}
+
+// Lógica para Cadastro de Administrador
+const formAdm = document.getElementById('formCadastroAdm');
+if (formAdm) {
+    formAdm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        alert("Administrador registrado com sucesso!");
+        window.location.href = "login.html";
+    });
+}
+
+// ... (mantenha aqui o resto do código do CRUD que fizemos antes)
