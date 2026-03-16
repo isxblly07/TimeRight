@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Painel de Agendamento</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <span>Bem-vinda ao seu Painel</span>
+        <a href="login.html">Sair</a>
+    </nav>
+
+    <main class="container">
+        <section class="pagina-larga">
+            <h2>Novo Agendamento</h2>
+            <form id="formAgendamento">
+                <input type="hidden" id="indexEdicao"> <input type="text" id="cliente" placeholder="Nome da Cliente" required>
+                <input type="text" id="servico" placeholder="Serviço (ex: Manicure)" required>
+                <input type="datetime-local" id="dataHora" required>
+                <button type="submit" id="btnSalvar">Confirmar Horário</button>
+            </form>
+
+            <hr>
+
+            <h3>Lista de Marcações</h3>
+            <table id="tabelaAgendamentos">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Serviço</th>
+                        <th>Data/Hora</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="corpoTabela">
+                    </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Salão de Beleza</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="container">
+        <section class="pagina">
+            <h1>Salão Rosa</h1>
+            <h2>Login</h2>
+            <form id="formLogin">
+                <input type="email" id="email" placeholder="E-mail" required>
+                <input type="password" id="senha" placeholder="Senha" required>
+                
+                <div class="tipo-usuario">
+                    <label><input type="radio" name="tipo" value="admin"> Admin</label>
+                    <label><input type="radio" name="tipo" value="user" checked> Cliente</label>
+                </div>
+                
+                <button type="submit">Entrar</button>
+            </form>
+            <p>Ainda não tem conta? <a href="cadastro.html">Registe-se aqui</a></p>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
