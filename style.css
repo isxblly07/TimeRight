@@ -224,5 +224,5 @@ footer {
     background-image: url('link-da-sua-imagem.jpg'); /* Adicione esta linha */
     background-size: cover; /* Faz a imagem cobrir o card todo */
     background-position: center;
-    /* ... mantenha o restante ... */
+    background-repeat: no-repeat; /* Impede que a foto se repita como um papel de parede antigo */
 }
