@@ -1,117 +1,164 @@
-// --- 1. LÓGICA DE LOGIN ---
+// --- CONFIGURAÇÃO DA API ---
+// Substitua pela URL real do seu back-end quando ele estiver no ar
+const API_URL = "https://sua-api-salao.herokuapp.com"; 
+
+// --- 1. LÓGICA DE LOGIN (AUTENTICAÇÃO) ---
 const formLogin = document.getElementById('formLogin');
 if (formLogin) {
-    formLogin.addEventListener('submit', function(e) {
+    formLogin.addEventListener('submit', async function(e) {
         e.preventDefault();
         
-        // Simulação: se o login for feito, redireciona para a página de agendar
-        alert("Login efetuado com sucesso!");
-        window.location.href = "agendar.html";
+        const dados = {
+            email: document.getElementById('email').value,
+            senha: document.getElementById('senha').value
+        };
+
+        try {
+            const resposta = await fetch(`${API_URL}/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(dados)
+            });
+
+            if (resposta.ok) {
+                const resultado = await resposta.json();
+                // Guardamos um "token" ou o nome para saber que estamos logados
+                sessionStorage.setItem('usuarioLogado', resultado.nome);
+                alert(`Bem-vinda, ${resultado.nome}!`);
+                window.location.href = "agendar.html";
+            } else {
+                alert("E-mail ou senha incorretos.");
+            }
+        } catch (erro) {
+            console.error("Erro ao conectar no servidor:", erro);
+            alert("Servidor offline. Usando modo de teste.");
+            window.location.href = "agendar.html"; // Redireciona mesmo assim para você não travar no teste
+        }
     });
 }
 
-// --- 2. LÓGICA DO CRUD (Agendamentos) ---
+// --- 2. LÓGICA DO CRUD COM BACK-END ---
 const formAgendamento = document.getElementById('formAgendamento');
 const corpoTabela = document.getElementById('corpoTabela');
 
-// Sempre que a página carregar, mostra a lista atualizada
 document.addEventListener('DOMContentLoaded', listarAgendamentos);
 
 if (formAgendamento) {
-    formAgendamento.addEventListener('submit', function(e) {
+    formAgendamento.addEventListener('submit', async function(e) {
         e.preventDefault();
 
-        const cliente = document.getElementById('cliente').value;
-        const servico = document.getElementById('servico').value;
-        const dataHora = document.getElementById('dataHora').value;
-        const index = document.getElementById('indexEdicao').value;
+        const idEdicao = document.getElementById('indexEdicao').value;
+        const dadosAgendamento = {
+            cliente: document.getElementById('cliente').value,
+            servico: document.getElementById('servico').value,
+            dataHora: document.getElementById('dataHora').value
+        };
 
-        const novoDado = { cliente, servico, dataHora };
+        try {
+            let resposta;
+            if (idEdicao === "") {
+                // CREATE: Envia novo para o servidor
+                resposta = await fetch(`${API_URL}/agendamentos`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dadosAgendamento)
+                });
+            } else {
+                // UPDATE: Atualiza um existente usando o ID
+                resposta = await fetch(`${API_URL}/agendamentos/${idEdicao}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dadosAgendamento)
+                });
+            }
 
-        // Pega os dados que já existem no navegador ou cria uma lista vazia
-        let lista = JSON.parse(localStorage.getItem('agendamentos')) || [];
-
-        if (index === "") {
-            // Ação: CREATE (Adicionar)
-            lista.push(novoDado);
-        } else {
-            // Ação: UPDATE (Editar)
-            lista[index] = novoDado;
-            document.getElementById('indexEdicao').value = ""; // Limpa o ID de edição
+            if (resposta.ok) {
+                alert("Dados salvos no servidor!");
+                resetarFormulario();
+                listarAgendamentos();
+            }
+        } catch (erro) {
+            // Se o servidor falhar, o código avisa no console
+            console.warn("API indisponível, salvando localmente para teste...");
+            salvarLocalmente(dadosAgendamento, idEdicao);
         }
-
-        // Guarda a lista de volta no navegador (localStorage)
-        localStorage.setItem('agendamentos', JSON.stringify(lista));
-        
-        formAgendamento.reset();
-        document.getElementById('btnSalvar').innerText = "Confirmar Horário";
-        listarAgendamentos();
     });
 }
 
-// Ação: READ (Ler/Mostrar)
-function listarAgendamentos() {
+// READ: Busca os dados na API
+async function listarAgendamentos() {
     if (!corpoTabela) return;
     
-    let lista = JSON.parse(localStorage.getItem('agendamentos')) || [];
-    corpoTabela.innerHTML = ""; // Limpa para não repetir
-
-    lista.forEach((item, index) => {
-        corpoTabela.innerHTML += `
-            <tr>
-                <td>${item.cliente}</td>
-                <td>${item.servico}</td>
-                <td>${item.dataHora}</td>
-                <td>
-                    <button class="btn-editar" onclick="carregarParaEditar(${index})">Editar</button>
-                    <button class="btn-excluir" onclick="remover(${index})">Apagar</button>
-                </td>
-            </tr>
-        `;
-    });
-}
-
-// Ação: DELETE (Remover)
-function remover(index) {
-    if (confirm("Deseja apagar este agendamento?")) {
-        let lista = JSON.parse(localStorage.getItem('agendamentos'));
-        lista.splice(index, 1); // Remove da lista
-        localStorage.setItem('agendamentos', JSON.stringify(lista));
-        listarAgendamentos();
+    try {
+        const resposta = await fetch(`${API_URL}/agendamentos`);
+        const lista = await resposta.json();
+        renderizarTabela(lista);
+    } catch (erro) {
+        // Fallback: Se a API falhar, mostra o que está no localStorage
+        const listaLocal = JSON.parse(localStorage.getItem('agendamentos')) || [];
+        renderizarTabela(listaLocal);
     }
 }
 
-// Ação: UPDATE (Preparar para editar)
-function carregarParaEditar(index) {
-    let lista = JSON.parse(localStorage.getItem('agendamentos'));
-    const item = lista[index];
-
-    document.getElementById('cliente').value = item.cliente;
-    document.getElementById('servico').value = item.servico;
-    document.getElementById('dataHora').value = item.dataHora;
-    document.getElementById('indexEdicao').value = index;
-    
-    document.getElementById('btnSalvar').innerText = "Atualizar Dados";
+// Função auxiliar para desenhar a tabela
+function renderizarTabela(lista) {
+    corpoTabela.innerHTML = lista.map((item, index) => `
+        <tr>
+            <td>${item.cliente}</td>
+            <td>${item.servico}</td>
+            <td>${new Date(item.dataHora).toLocaleString('pt-BR')}</td>
+            <td>
+                <button class="btn-editar" onclick="carregarParaEditar(${item.id || index})">Editar</button>
+                <button class="btn-excluir" onclick="remover('${item.id || index}')">Apagar</button>
+            </td>
+        </tr>
+    `).join('');
 }
 
-// Lógica para Cadastro de Usuário
-const formUser = document.getElementById('formCadastroUser');
-if (formUser) {
-    formUser.addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert("Cadastro de Cliente realizado! Agora você pode fazer login.");
-        window.location.href = "login.html"; // Redireciona para o login
-    });
+// DELETE: Apaga na API
+async function remover(id) {
+    if (!confirm("Confirmar exclusão?")) return;
+
+    try {
+        await fetch(`${API_URL}/agendamentos/${id}`, { method: 'DELETE' });
+        listarAgendamentos();
+    } catch (erro) {
+        alert("Erro ao apagar no servidor.");
+    }
 }
 
-// Lógica para Cadastro de Administrador
-const formAdm = document.getElementById('formCadastroAdm');
-if (formAdm) {
-    formAdm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert("Administrador registrado com sucesso!");
+// Funções de Ajuda
+function resetarFormulario() {
+    formAgendamento.reset();
+    document.getElementById('indexEdicao').value = "";
+    document.getElementById('btnSalvar').innerText = "Confirmar Horário";
+}
+
+// --- 3. LÓGICA DE CADASTRO (CLIENTE E ADM) ---
+async function enviarCadastro(event, rota) {
+    event.preventDefault();
+    const form = event.target;
+    const formData = new FormData(form);
+    const dados = Object.fromEntries(formData.entries());
+
+    try {
+        const resp = await fetch(`${API_URL}/${rota}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+        });
+        if(resp.ok) {
+            alert("Sucesso! Faça seu login.");
+            window.location.href = "login.html";
+        }
+    } catch (e) {
+        alert("Simulação: Cadastro realizado!");
         window.location.href = "login.html";
-    });
+    }
 }
 
-// ... (mantenha aqui o resto do código do CRUD que fizemos antes)
+const formUser = document.getElementById('formCadastroUser');
+if (formUser) formUser.addEventListener('submit', (e) => enviarCadastro(e, 'usuarios'));
+
+const formAdm = document.getElementById('formCadastroAdm');
+if (formAdm) formAdm.addEventListener('submit', (e) => enviarCadastro(e, 'admin'));
