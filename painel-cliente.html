@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Meu Painel | Salão Rosa</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="area-logada">
+    <nav class="navbar-principal">
+        <div class="logo">TimeRight</div>
+        <div class="links">
+            <span id="boasVindas">Bem-vinda!</span>
+            <a href="#" onclick="logout()">Sair</a>
+        </div>
+    </nav>
+ 
+    <main class="container">
+        <section class="pagina-larga">
+            <h2>Agendar Novo Serviço</h2>
+            <form id="formAgendamento">
+                <input type="hidden" id="indexEdicao">
+                <div class="grid-form">
+                    <input type="text" id="servico" placeholder="Qual serviço deseja? (Ex: Corte)" required>
+                    <input type="datetime-local" id="dataHora" required>
+                </div>
+                <button type="submit" id="btnSalvar">Confirmar Agendamento</button>
+            </form>
+ 
+            <hr>
+ 
+            <h3>Meus Agendamentos</h3>
+            <div id="listaVazia" style="display: none; color: #999;">Você ainda não tem agendamentos.</div>
+            <table id="tabelaAgendamentos">
+                <thead>
+                    <tr>
+                        <th>Serviço</th>
+                        <th>Data e Hora</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="corpoTabela">
+                    </tbody>
+            </table>
+        </section>
+    </main>
+ 
+    <script src="script.js"></script>
+</body>
+</html>

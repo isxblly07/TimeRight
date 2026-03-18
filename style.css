@@ -227,3 +227,23 @@ footer {
     background-position: center;
     background-repeat: no-repeat; /* Impede que a foto se repita como um papel de parede antigo */
 }
+
+.status-pendente {
+    background-color: #fff3f5;
+    color: #ff8da1;
+    padding: 4px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: bold;
+}
+ 
+.grid-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+ 
+/* Esconde o Navbar e Footer na área logada como você pediu */
+.area-logada footer {
+    display: none;
+}

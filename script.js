@@ -1,6 +1,6 @@
 // --- CONFIGURAÇÃO DA API ---
 // Substitua pela URL real do seu back-end quando ele estiver no ar
-const API_URL = "https://sua-api-salao.herokuapp.com"; 
+const API_URL = "http://localhost:8080/api/usuario"; 
 
 // --- 1. LÓGICA DE LOGIN (AUTENTICAÇÃO) ---
 const formLogin = document.getElementById('formLogin');
@@ -162,3 +162,70 @@ if (formUser) formUser.addEventListener('submit', (e) => enviarCadastro(e, 'usua
 
 const formAdm = document.getElementById('formCadastroAdm');
 if (formAdm) formAdm.addEventListener('submit', (e) => enviarCadastro(e, 'admin'));
+
+// --- LOGICA DE REDIRECIONAMENTO NO LOGIN ---
+const FormLogin = document.getElementById('formLogin');
+if (formLogin) {
+    formLogin.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        
+        // Simulação de Login: Guarda o e-mail no navegador (SessionStorage)
+        sessionStorage.setItem('usuarioAtivo', email);
+        
+        alert("Login realizado com sucesso!");
+        window.location.href = "painel-cliente.html"; // Vai para a nova página
+    });
+}
+ 
+// --- CONTROLE DO PAINEL (CRUD FOCO EM JS) ---
+document.addEventListener('DOMContentLoaded', () => {
+    if (window.location.pathname.includes('painel-cliente.html')) {
+        const usuario = sessionStorage.getItem('usuarioAtivo');
+        
+        if (!usuario) {
+            window.location.href = "login.html"; // Proteção: Se não logou, volta
+            return;
+        }
+ 
+        document.getElementById('boasVindas').innerText = `Olá, ${usuario.split('@')[0]}!`;
+        listarAgendamentos();
+    }
+});
+ 
+// Função para Sair
+function logout() {
+    sessionStorage.removeItem('usuarioAtivo');
+    window.location.href = "login.html";
+}
+ 
+// Renderização Dinâmica com JS
+async function listarAgendamentos() {
+    const corpoTabela = document.getElementById('corpoTabela');
+    if (!corpoTabela) return;
+ 
+    // Aqui você buscaria da sua API futuramente. Por enquanto, usamos localStorage.
+    let agendamentos = JSON.parse(localStorage.getItem('agendamentos')) || [];
+    
+    // Filtrar agendamentos apenas do usuário logado (Lógica de JS)
+    const usuarioAtivo = sessionStorage.getItem('usuarioAtivo');
+    const meusAgendamentos = agendamentos.filter(a => a.usuario === usuarioAtivo);
+ 
+    if (meusAgendamentos.length === 0) {
+        document.getElementById('listaVazia').style.display = 'block';
+        document.getElementById('tabelaAgendamentos').style.display = 'none';
+        return;
+    }
+ 
+    corpoTabela.innerHTML = meusAgendamentos.map((item, index) => `
+        <tr>
+            <td>${item.servico}</td>
+            <td>${new Date(item.dataHora).toLocaleString('pt-BR')}</td>
+            <td><span class="status-pendente">Pendente</span></td>
+            <td>
+                <button class="btn-editar" onclick="carregarParaEditar(${index})">✎</button>
+                <button class="btn-excluir" onclick="remover(${index})">X</button>
+            </td>
+        </tr>
+    `).join('');
+}
