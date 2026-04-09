@@ -27,6 +27,25 @@ const DashboardCliente = () => {
   // Confirmação de agendamento
   const [agendado, setAgendado] = useState(false);
 
+  // Horários com status por data (simulado)
+  const horariosBase = [
+    { hora: '09:00', ocupado: false },
+    { hora: '10:00', ocupado: true },
+    { hora: '11:00', ocupado: false },
+    { hora: '13:00', ocupado: true },
+    { hora: '14:00', ocupado: false },
+    { hora: '15:00', ocupado: true },
+    { hora: '16:00', ocupado: false },
+    { hora: '17:00', ocupado: false },
+  ];
+
+  // Varia os horários ocupados conforme a data escolhida
+  const getHorarios = (data) => {
+    if (!data) return horariosBase;
+    const dia = parseInt(data.split('-')[2], 10);
+    return horariosBase.map((h, i) => ({ ...h, ocupado: (dia + i) % 3 === 0 }));
+  };
+
   // Filtra salões pelo nome ou cidade digitado
   const saloesFiltrados = saloesMock.filter(s =>
     s.nome.toLowerCase().includes(busca.toLowerCase()) ||
@@ -116,7 +135,7 @@ const DashboardCliente = () => {
                   ✅ Agendamento confirmado! Até logo, {user.nome.split(' ')[0]}!
                 </div>
               ) : (
-                <form onSubmit={handleAgendar}>
+                <form onSubmit={(e) => { e.preventDefault(); if (!agendamento.hora) return; handleAgendar(e); }}>
                   <div className="form-group">
                     <label>Serviço</label>
                     <select
@@ -143,16 +162,23 @@ const DashboardCliente = () => {
 
                   <div className="form-group">
                     <label>Horário</label>
-                    <select
-                      value={agendamento.hora}
-                      onChange={(e) => setAgendamento({ ...agendamento, hora: e.target.value })}
-                      required
-                    >
-                      <option value="">Selecione um horário</option>
-                      {['09:00', '10:00', '11:00', '13:00', '14:00', '15:00', '16:00', '17:00'].map(h => (
-                        <option key={h} value={h}>{h}</option>
+                    <div className="horarios-grid">
+                      {getHorarios(agendamento.data).map(({ hora, ocupado }) => (
+                        <button
+                          key={hora}
+                          type="button"
+                          disabled={ocupado}
+                          className={`horario-btn ${
+                            ocupado ? 'ocupado' : agendamento.hora === hora ? 'selecionado' : ''
+                          }`}
+                          onClick={() => !ocupado && setAgendamento({ ...agendamento, hora })}
+                        >
+                          {hora}
+                          {ocupado && <span className="horario-tag">Ocupado</span>}
+                        </button>
                       ))}
-                    </select>
+                    </div>
+                    {!agendamento.hora && <p className="horario-aviso">Selecione um horário disponível</p>}
                   </div>
 
                   <div className="modal-botoes">

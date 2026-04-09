@@ -12,6 +12,7 @@ import CadastroSalao from './pages/CadastroSalao';
 import Painel from './pages/Painel';
 import DashboardCliente from './pages/DashboardCliente';
 import Perfil from './pages/Perfil';
+import Historico from './pages/Historico';
 
 // Rota protegida: redireciona se não estiver logado ou tipo errado
 const RotaProtegida = ({ children, tipo }) => {
@@ -61,6 +62,13 @@ function App() {
           <Route path="/perfil" element={
             <RotaProtegida tipo="cliente">
               <Perfil />
+            </RotaProtegida>
+          } />
+
+          {/* Histórico de agendamentos do cliente (protegido) */}
+          <Route path="/historico" element={
+            <RotaProtegida tipo="cliente">
+              <Historico />
             </RotaProtegida>
           } />
 

@@ -183,3 +183,57 @@
 @media (max-width: 700px) {
   .saloes-grid { grid-template-columns: 1fr; }
 }
+
+/* Grid de horários */
+.horarios-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.horario-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 6px;
+  border: 2px solid var(--rosa-bebe);
+  border-radius: 10px;
+  background: var(--branco);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--texto-escuro);
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  transition: all 0.15s;
+}
+
+.horario-btn:hover:not(:disabled) {
+  border-color: var(--rosa-medio);
+  background: var(--rosa-suave);
+}
+
+.horario-btn.selecionado {
+  background: linear-gradient(135deg, var(--rosa-medio), var(--rosa-escuro));
+  border-color: transparent;
+  color: var(--branco);
+}
+
+.horario-btn.ocupado {
+  background: #f5f5f5;
+  border-color: #e0e0e0;
+  color: #bdbdbd;
+  cursor: not-allowed;
+}
+
+.horario-tag {
+  font-size: 10px;
+  font-weight: 400;
+}
+
+.horario-aviso {
+  font-size: 12px;
+  color: var(--rosa-escuro);
+  margin-top: 6px;
+}

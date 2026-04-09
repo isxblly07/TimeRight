@@ -43,6 +43,7 @@ const Navbar = () => {
             {user.tipo === 'cliente' && (
               <>
                 <Link to="/cliente" className="nav-link">Buscar Salões</Link>
+                <Link to="/historico" className="nav-link">Histórico</Link>
                 <Link to="/perfil" className="nav-link">Perfil</Link>
               </>
             )}
