@@ -1,0 +1,148 @@
+/* Estilos da página principal */
+.home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Seção hero */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 80px 80px;
+  background: linear-gradient(135deg, var(--rosa-suave) 0%, var(--branco) 100%);
+  flex: 1;
+  gap: 40px;
+}
+
+.hero-content {
+  max-width: 560px;
+}
+
+/* Título principal com destaque em rosa */
+.hero-titulo {
+  font-size: 42px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--texto-escuro);
+  margin-bottom: 20px;
+}
+
+.hero-titulo span {
+  color: var(--rosa-escuro);
+}
+
+.hero-subtitulo {
+  font-size: 17px;
+  color: var(--texto-medio);
+  margin-bottom: 36px;
+  line-height: 1.6;
+}
+
+/* Botões lado a lado */
+.hero-botoes {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+/* Círculo decorativo com SVG e texto curvo */
+.hero-circulo {
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  box-shadow: 0 20px 60px var(--sombra);
+  overflow: visible;
+}
+
+/* Texto que segue o caminho circular */
+.circulo-texto {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 18px;
+  font-weight: 700;
+  fill: var(--branco);
+  letter-spacing: 3px;
+}
+
+/* Texto central grande com as iniciais */
+.circulo-centro {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 96px;
+  font-weight: 700;
+  fill: var(--branco);
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+/* Seção de benefícios */
+.beneficios {
+  padding: 60px 80px;
+  text-align: center;
+  background: var(--branco);
+}
+
+.beneficios h2 {
+  font-size: 28px;
+  color: var(--texto-escuro);
+  margin-bottom: 40px;
+}
+
+/* Grid de 3 cards */
+.beneficios-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.beneficio-card {
+  background: var(--rosa-suave);
+  border-radius: 16px;
+  padding: 32px 24px;
+  transition: transform 0.2s;
+}
+
+.beneficio-card:hover {
+  transform: translateY(-4px);
+}
+
+.beneficio-icone {
+  font-size: 40px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.beneficio-card h3 {
+  font-size: 18px;
+  color: var(--rosa-escuro);
+  margin-bottom: 10px;
+}
+
+.beneficio-card p {
+  font-size: 14px;
+  color: var(--texto-medio);
+  line-height: 1.5;
+}
+
+/* Rodapé */
+.footer {
+  background: var(--rosa-bebe);
+  text-align: center;
+  padding: 20px;
+  font-size: 13px;
+  color: var(--texto-medio);
+}
+
+/* Responsivo */
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column;
+    padding: 50px 24px;
+    text-align: center;
+  }
+  .hero-titulo { font-size: 30px; }
+  .hero-botoes { justify-content: center; }
+  .hero-circulo { width: 180px; height: 180px; font-size: 70px; }
+  .beneficios { padding: 40px 24px; }
+  .beneficios-grid { grid-template-columns: 1fr; }
+}

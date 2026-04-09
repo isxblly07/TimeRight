@@ -1,0 +1,151 @@
+/* Estilos do painel do administrador */
+.admin-page {
+  min-height: 100vh;
+  background: var(--branco-off);
+}
+
+.admin-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+/* Cabeçalho de boas-vindas */
+.admin-header {
+  margin-bottom: 32px;
+}
+
+.admin-header h1 {
+  font-size: 28px;
+  color: var(--texto-escuro);
+  margin-bottom: 6px;
+}
+
+.admin-header p {
+  color: var(--texto-medio);
+  font-size: 15px;
+}
+
+/* Abas de navegação */
+.admin-abas {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.aba-btn {
+  padding: 12px 28px;
+  border: 2px solid var(--rosa-bebe);
+  border-radius: 25px;
+  background: var(--branco);
+  color: var(--texto-medio);
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Aba ativa */
+.aba-btn.ativa {
+  background: linear-gradient(135deg, var(--rosa-medio), var(--rosa-escuro));
+  border-color: transparent;
+  color: var(--branco);
+  font-weight: 600;
+}
+
+.admin-card {
+  width: 100%;
+}
+
+.admin-card h2 {
+  font-size: 20px;
+  color: var(--texto-escuro);
+  margin-bottom: 6px;
+}
+
+.admin-subtitulo {
+  font-size: 14px;
+  color: var(--texto-medio);
+  margin-bottom: 24px;
+}
+
+/* Mensagem de sucesso */
+.sucesso-msg {
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 12px 16px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Formulário com duas colunas */
+.salao-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* Tabela de agenda */
+.agenda-tabela {
+  border: 1px solid var(--rosa-bebe);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Cabeçalho da tabela */
+.tabela-header {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1.2fr 1fr 1.2fr;
+  background: var(--rosa-bebe);
+  padding: 14px 20px;
+  font-weight: 600;
+  font-size: 13px;
+  color: var(--texto-escuro);
+}
+
+/* Linha da tabela */
+.tabela-linha {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1.2fr 1fr 1.2fr;
+  padding: 14px 20px;
+  font-size: 14px;
+  color: var(--texto-medio);
+  border-top: 1px solid var(--rosa-suave);
+  align-items: center;
+  transition: background 0.15s;
+}
+
+.tabela-linha:hover {
+  background: var(--rosa-suave);
+}
+
+/* Badge de status */
+.status-badge {
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.status-badge.confirmado {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.pendente {
+  background: #fff8e1;
+  color: #f57f17;
+}
+
+/* Responsivo */
+@media (max-width: 700px) {
+  .salao-form .form-row { grid-template-columns: 1fr; }
+  .tabela-header, .tabela-linha {
+    grid-template-columns: 1fr 1fr;
+    font-size: 12px;
+  }
+}

@@ -1,0 +1,185 @@
+/* Estilos do painel do cliente */
+.cliente-page {
+  min-height: 100vh;
+  background: var(--branco-off);
+}
+
+.cliente-container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 24px;
+}
+
+/* Cabeçalho */
+.cliente-header {
+  margin-bottom: 28px;
+}
+
+.cliente-header h1 {
+  font-size: 28px;
+  color: var(--texto-escuro);
+  margin-bottom: 6px;
+}
+
+.cliente-header p {
+  color: var(--texto-medio);
+  font-size: 15px;
+}
+
+/* Barra de busca */
+.busca-container {
+  margin-bottom: 32px;
+}
+
+.busca-input-wrapper {
+  display: flex;
+  align-items: center;
+  background: var(--branco);
+  border: 2px solid var(--rosa-bebe);
+  border-radius: 30px;
+  padding: 4px 20px;
+  box-shadow: 0 4px 16px var(--sombra);
+  transition: border-color 0.2s;
+}
+
+.busca-input-wrapper:focus-within {
+  border-color: var(--rosa-escuro);
+}
+
+.busca-icone {
+  font-size: 18px;
+  margin-right: 12px;
+}
+
+/* Input da busca sem borda própria */
+.busca-input {
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  padding: 12px 0;
+  flex: 1;
+}
+
+.busca-input:focus {
+  border: none;
+  outline: none;
+}
+
+/* Grid de salões */
+.saloes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.sem-resultados {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--texto-medio);
+  font-size: 15px;
+  padding: 40px;
+}
+
+/* Card de cada salão */
+.salao-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Topo do card: ícone, nome e avaliação */
+.salao-topo {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.salao-emoji {
+  font-size: 32px;
+}
+
+.salao-topo h3 {
+  font-size: 16px;
+  color: var(--texto-escuro);
+  margin-bottom: 2px;
+}
+
+.salao-local {
+  font-size: 13px;
+  color: var(--texto-medio);
+}
+
+.salao-avaliacao {
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--rosa-escuro);
+  white-space: nowrap;
+}
+
+.salao-servicos, .salao-horario {
+  font-size: 13px;
+  color: var(--texto-medio);
+}
+
+.salao-btn {
+  margin-top: 8px;
+  align-self: flex-start;
+}
+
+/* Modal de agendamento */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(74, 44, 58, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 20px;
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 420px;
+}
+
+.modal-card h3 {
+  font-size: 20px;
+  color: var(--texto-escuro);
+  margin-bottom: 6px;
+}
+
+.modal-subtitulo {
+  font-size: 14px;
+  color: var(--texto-medio);
+  margin-bottom: 20px;
+}
+
+/* Botões do modal lado a lado */
+.modal-botoes {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.modal-botoes .btn-primary,
+.modal-botoes .btn-secondary {
+  flex: 1;
+}
+
+/* Mensagem de agendamento confirmado */
+.agendado-msg {
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Responsivo */
+@media (max-width: 700px) {
+  .saloes-grid { grid-template-columns: 1fr; }
+}

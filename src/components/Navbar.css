@@ -1,0 +1,57 @@
+/* Estilos da barra de navegação */
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 48px;
+  background: var(--branco);
+  box-shadow: 0 2px 12px var(--sombra);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Logo com emoji e texto */
+.navbar-logo {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--rosa-escuro);
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+
+/* Grupo de links à direita */
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Link simples da navbar */
+.nav-link {
+  text-decoration: none;
+  color: var(--texto-medio);
+  font-weight: 500;
+  font-size: 15px;
+  transition: color 0.2s;
+}
+
+.nav-link:hover {
+  color: var(--rosa-escuro);
+}
+
+/* Nome do usuário logado */
+.nav-usuario {
+  font-size: 14px;
+  color: var(--texto-medio);
+  font-weight: 500;
+}
+
+/* Responsivo para telas menores */
+@media (max-width: 600px) {
+  .navbar {
+    padding: 14px 20px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+}

@@ -1,0 +1,103 @@
+/* Estilos globais da aplicação */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Variáveis de cores: tons de rosa e branco */
+:root {
+  --rosa-bebe: #f8c8d4;
+  --rosa-medio: #f4a0b5;
+  --rosa-escuro: #e07a9a;
+  --rosa-suave: #fde8ef;
+  --branco: #ffffff;
+  --branco-off: #fdf6f8;
+  --cinza-claro: #f0f0f0;
+  --texto-escuro: #4a2c3a;
+  --texto-medio: #7a4a5a;
+  --sombra: rgba(224, 122, 154, 0.2);
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--branco-off);
+  color: var(--texto-escuro);
+}
+
+/* Botão padrão rosa */
+.btn-primary {
+  background: linear-gradient(135deg, var(--rosa-medio), var(--rosa-escuro));
+  color: var(--branco);
+  border: none;
+  padding: 12px 28px;
+  border-radius: 25px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  font-family: 'Poppins', sans-serif;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--sombra);
+}
+
+/* Botão secundário (contorno) */
+.btn-secondary {
+  background: transparent;
+  color: var(--rosa-escuro);
+  border: 2px solid var(--rosa-escuro);
+  padding: 10px 26px;
+  border-radius: 25px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Poppins', sans-serif;
+}
+
+.btn-secondary:hover {
+  background: var(--rosa-suave);
+}
+
+/* Card padrão */
+.card {
+  background: var(--branco);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 4px 20px var(--sombra);
+}
+
+/* Input padrão */
+input, select, textarea {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--rosa-bebe);
+  border-radius: 10px;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif;
+  color: var(--texto-escuro);
+  background: var(--branco);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--rosa-escuro);
+}
+
+/* Label padrão */
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  font-size: 14px;
+  color: var(--texto-medio);
+}
+
+/* Grupo de formulário */
+.form-group {
+  margin-bottom: 18px;
+}

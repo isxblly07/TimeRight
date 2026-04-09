@@ -1,0 +1,122 @@
+/* Estilos compartilhados das páginas de Login e Cadastro */
+
+/* Página inteira com fundo gradiente rosa */
+.auth-page {
+  min-height: 100vh;
+  background: linear-gradient(160deg, var(--rosa-suave) 0%, var(--branco) 100%);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Container centralizado */
+.auth-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+/* Card do formulário */
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+}
+
+/* Cabeçalho com ícone e título */
+.auth-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.auth-icone {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.auth-header h2 {
+  font-size: 24px;
+  color: var(--texto-escuro);
+  margin-bottom: 6px;
+}
+
+.auth-header p {
+  font-size: 14px;
+  color: var(--texto-medio);
+}
+
+/* Seletor de tipo de conta (Cliente / Admin) */
+.tipo-selector {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.tipo-btn {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid var(--rosa-bebe);
+  border-radius: 10px;
+  background: var(--branco);
+  color: var(--texto-medio);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Estado ativo do seletor */
+.tipo-btn.ativo {
+  border-color: var(--rosa-escuro);
+  background: var(--rosa-suave);
+  color: var(--rosa-escuro);
+  font-weight: 600;
+}
+
+/* Botão de submit ocupa largura total */
+.auth-btn {
+  width: 100%;
+  margin-top: 8px;
+}
+
+/* Mensagem de erro */
+.auth-erro {
+  color: #c0392b;
+  font-size: 13px;
+  margin-bottom: 12px;
+  text-align: center;
+  background: #fdecea;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+/* Dica de contas de teste */
+.auth-dica {
+  margin-top: 20px;
+  padding: 12px;
+  background: var(--rosa-suave);
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--texto-medio);
+  text-align: center;
+}
+
+/* Link para alternar entre login e cadastro */
+.auth-link {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--texto-medio);
+}
+
+.auth-link a {
+  color: var(--rosa-escuro);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-link a:hover {
+  text-decoration: underline;
+}
