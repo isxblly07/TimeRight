@@ -8,6 +8,8 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
 import DashboardAdmin from './pages/DashboardAdmin';
+import CadastroSalao from './pages/CadastroSalao';
+import Painel from './pages/Painel';
 import DashboardCliente from './pages/DashboardCliente';
 import Perfil from './pages/Perfil';
 
@@ -35,6 +37,16 @@ function App() {
           <Route path="/admin" element={
             <RotaProtegida tipo="admin">
               <DashboardAdmin />
+            </RotaProtegida>
+          } />
+          <Route path="/admin/cadastro-salao" element={
+            <RotaProtegida tipo="admin">
+              <CadastroSalao />
+            </RotaProtegida>
+          } />
+          <Route path="/admin/painel" element={
+            <RotaProtegida tipo="admin">
+              <Painel />
             </RotaProtegida>
           } />
 
