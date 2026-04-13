@@ -237,3 +237,35 @@
   color: var(--rosa-escuro);
   margin-top: 6px;
 }
+
+/* Header do cliente com botão de editar */
+.cliente-header-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.btn-editar-perfil {
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* Mensagem de sucesso inline */
+.perfil-sucesso-inline {
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 10px 16px;
+  border-radius: 10px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* Descrição do salão no card */
+.salao-descricao {
+  font-size: 13px;
+  color: var(--texto-medio);
+  line-height: 1.5;
+  font-style: italic;
+}

@@ -50,12 +50,6 @@ const Perfil = () => {
         <div className="card perfil-card">
           <div className="perfil-card-header">
             <h3>Minhas Informações</h3>
-            {/* Botão para alternar edição */}
-            {!editando && (
-              <button className="btn-secondary" onClick={() => setEditando(true)}>
-                ✏️ Editar
-              </button>
-            )}
           </div>
 
           {/* Mensagem de sucesso */}
@@ -65,28 +59,33 @@ const Perfil = () => {
 
           {/* Modo visualização */}
           {!editando ? (
-            <div className="perfil-info-lista">
-              <div className="perfil-info-item">
-                <span className="info-label">Nome</span>
-                <span className="info-valor">{user.nome}</span>
+            <>
+              <div className="perfil-info-lista">
+                <div className="perfil-info-item">
+                  <span className="info-label">Nome</span>
+                  <span className="info-valor">{user.nome}</span>
+                </div>
+                <div className="perfil-info-item">
+                  <span className="info-label">E-mail</span>
+                  <span className="info-valor">{user.email}</span>
+                </div>
+                <div className="perfil-info-item">
+                  <span className="info-label">Telefone</span>
+                  <span className="info-valor">{user.telefone}</span>
+                </div>
+                <div className="perfil-info-item">
+                  <span className="info-label">Cidade</span>
+                  <span className="info-valor">{user.cidade}</span>
+                </div>
+                <div className="perfil-info-item">
+                  <span className="info-label">Tipo de conta</span>
+                  <span className="info-valor">Cliente</span>
+                </div>
               </div>
-              <div className="perfil-info-item">
-                <span className="info-label">E-mail</span>
-                <span className="info-valor">{user.email}</span>
-              </div>
-              <div className="perfil-info-item">
-                <span className="info-label">Telefone</span>
-                <span className="info-valor">{user.telefone}</span>
-              </div>
-              <div className="perfil-info-item">
-                <span className="info-label">Cidade</span>
-                <span className="info-valor">{user.cidade}</span>
-              </div>
-              <div className="perfil-info-item">
-                <span className="info-label">Tipo de conta</span>
-                <span className="info-valor">Cliente</span>
-              </div>
-            </div>
+              <button className="btn-primary perfil-btn-atualizar" onClick={() => setEditando(true)}>
+                ✏️ Atualizar Dados
+              </button>
+            </>
           ) : (
             // Modo edição: formulário
             <form onSubmit={handleSalvar} className="perfil-form">

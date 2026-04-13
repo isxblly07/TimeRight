@@ -7,10 +7,9 @@ const AuthContext = createContext(null);
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  // Estado do usuário logado (null = não logado)
   const [user, setUser] = useState(null);
+  const [salao, setSalaoState] = useState(null);
 
-  // Dados simulados de usuários (substitui banco de dados no frontend)
   const [usuarios, setUsuarios] = useState([
     { id: 1, nome: 'Admin Teste', email: 'admin@teste.com', senha: '123456', tipo: 'admin', telefone: '(11) 99999-0001', cidade: 'São Paulo' },
     { id: 2, nome: 'Cliente Teste', email: 'cliente@teste.com', senha: '123456', tipo: 'cliente', telefone: '(11) 99999-0002', cidade: 'São Paulo' },
@@ -36,17 +35,19 @@ export const AuthProvider = ({ children }) => {
     return { sucesso: true, tipo: novoUsuario.tipo };
   };
 
-  // Função de atualizar perfil do usuário logado
   const atualizarPerfil = (dados) => {
     setUser(prev => ({ ...prev, ...dados }));
     setUsuarios(prev => prev.map(u => u.id === user.id ? { ...u, ...dados } : u));
   };
 
-  // Função de logout
+  const salvarSalao = (dados) => setSalaoState({ ...dados, ativo: true });
+  const atualizarSalao = (dados) => setSalaoState(prev => ({ ...prev, ...dados }));
+  const desativarSalao = () => setSalaoState(prev => prev ? { ...prev, ativo: false } : null);
+
   const logout = () => setUser(null);
 
   return (
-    <AuthContext.Provider value={{ user, login, cadastrar, logout, atualizarPerfil }}>
+    <AuthContext.Provider value={{ user, login, cadastrar, logout, atualizarPerfil, salao, salvarSalao, atualizarSalao, desativarSalao }}>
       {children}
     </AuthContext.Provider>
   );

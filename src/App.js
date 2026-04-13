@@ -13,6 +13,7 @@ import Painel from './pages/Painel';
 import DashboardCliente from './pages/DashboardCliente';
 import Perfil from './pages/Perfil';
 import Historico from './pages/Historico';
+import AtualizarSalao from './pages/AtualizarSalao';
 
 // Rota protegida: redireciona se não estiver logado ou tipo errado
 const RotaProtegida = ({ children, tipo }) => {
@@ -48,6 +49,11 @@ function App() {
           <Route path="/admin/painel" element={
             <RotaProtegida tipo="admin">
               <Painel />
+            </RotaProtegida>
+          } />
+          <Route path="/admin/atualizar-salao" element={
+            <RotaProtegida tipo="admin">
+              <AtualizarSalao />
             </RotaProtegida>
           } />
 

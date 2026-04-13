@@ -1,7 +1,7 @@
-// Página de Login: permite entrar como Administrador ou Cliente
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { api } from '../services/api';
 import Navbar from '../components/Navbar';
 import './Auth.css';
 
@@ -9,24 +9,31 @@ const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
 
-  // Estado do formulário
   const [form, setForm] = useState({ email: '', senha: '' });
   const [erro, setErro] = useState('');
 
-  // Atualiza campo do formulário
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-  // Submete o login
-  const handleSubmit = (e) => {
+  // 🔥 FUNÇÃO CORRIGIDA
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setErro('');
 
-    const resultado = login(form.email, form.senha);
+    try {
+      const response = await api.post('/funcionario/login', {
+        email: form.email,
+        senha: form.senha
+      });
 
-    if (resultado.sucesso) {
-      // Redireciona conforme o tipo de usuário
-      navigate(resultado.tipo === 'admin' ? '/admin' : '/cliente');
-    } else {
+      const usuario = response.data;
+
+      login(usuario);
+
+      navigate('/admin');
+
+    } catch (error) {
       setErro('E-mail ou senha incorretos.');
     }
   };
@@ -37,14 +44,13 @@ const Login = () => {
 
       <div className="auth-container">
         <div className="auth-card card">
-          {/* Cabeçalho do formulário */}
+          
           <div className="auth-header">
             <span className="auth-icone">🌸</span>
             <h2>Bem-vinda de volta!</h2>
             <p>Entre na sua conta para continuar</p>
           </div>
 
-          {/* Formulário de login */}
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label>E-mail</label>
@@ -70,20 +76,19 @@ const Login = () => {
               />
             </div>
 
-            {/* Mensagem de erro */}
             {erro && <p className="auth-erro">{erro}</p>}
 
-            <button type="submit" className="btn-primary auth-btn">Entrar</button>
+            <button type="submit" className="btn-primary auth-btn">
+              Entrar
+            </button>
           </form>
 
-          {/* Dica de contas de teste */}
           <div className="auth-dica">
             <p>🔑 Contas de teste:</p>
             <small>Admin: admin@teste.com / 123456</small><br />
             <small>Cliente: cliente@teste.com / 123456</small>
           </div>
 
-          {/* Link para cadastro */}
           <p className="auth-link">
             Não tem conta? <Link to="/cadastro">Cadastre-se</Link>
           </p>
