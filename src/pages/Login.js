@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { api } from '../services/api';
 import Navbar from '../components/Navbar';
 import './Auth.css';
 
@@ -12,28 +11,17 @@ const Login = () => {
   const [form, setForm] = useState({ email: '', senha: '' });
   const [erro, setErro] = useState('');
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
-  // 🔥 FUNÇÃO CORRIGIDA
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setErro('');
 
-    try {
-      const response = await api.post('/funcionario/login', {
-        email: form.email,
-        senha: form.senha
-      });
+    const resultado = login(form.email, form.senha);
 
-      const usuario = response.data;
-
-      login(usuario);
-
-      navigate('/admin');
-
-    } catch (error) {
+    if (resultado.sucesso) {
+      navigate(resultado.tipo === 'admin' ? '/admin' : '/cliente');
+    } else {
       setErro('E-mail ou senha incorretos.');
     }
   };
