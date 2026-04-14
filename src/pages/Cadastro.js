@@ -1,15 +1,11 @@
-// Página de Cadastro: cria conta como Administrador ou Cliente
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import Navbar from '../components/Navbar';
 import './Auth.css';
 
 const Cadastro = () => {
-  const { cadastrar } = useAuth();
   const navigate = useNavigate();
 
-  // Estado do formulário com tipo padrão "cliente"
   const [form, setForm] = useState({
     nome: '',
     email: '',
@@ -18,23 +14,53 @@ const Cadastro = () => {
     cidade: '',
     tipo: 'cliente',
   });
+
   const [erro, setErro] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  // Atualiza campo do formulário
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
-  // Submete o cadastro
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setErro('');
+    setLoading(true);
 
-    const resultado = cadastrar(form);
+    try {
+      // 🔥 Mapeando dados para o backend
+      const payload = {
+        nome: form.nome,
+        username: form.email, // usando email como username
+        password: form.senha,
+        statusUsuario: "ATIVO",
+        dataCadastro: new Date().toISOString(),
 
-    if (resultado.sucesso) {
-      // Redireciona conforme o tipo escolhido
-      navigate(resultado.tipo === 'admin' ? '/admin' : '/cliente');
-    } else {
-      setErro(resultado.mensagem);
+        nivelAcesso: {
+          id: form.tipo === 'admin' ? 1 : 2 // ajuste conforme seu banco
+        }
+      };
+
+      const response = await fetch('http://localhost:8080/usuarios', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        const erroResponse = await response.json();
+        throw new Error(erroResponse.message || 'Erro ao cadastrar usuário');
+      }
+
+      // Sucesso 🎉
+      navigate(form.tipo === 'admin' ? '/admin' : '/cliente');
+
+    } catch (err) {
+      setErro(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,6 +70,7 @@ const Cadastro = () => {
 
       <div className="auth-container">
         <div className="auth-card card">
+
           {/* Cabeçalho */}
           <div className="auth-header">
             <span className="auth-icone">✨</span>
@@ -51,7 +78,7 @@ const Cadastro = () => {
             <p>Preencha os dados para se cadastrar</p>
           </div>
 
-          {/* Seletor de tipo de conta */}
+          {/* Tipo de conta */}
           <div className="tipo-selector">
             <button
               type="button"
@@ -60,6 +87,7 @@ const Cadastro = () => {
             >
               👤 Cliente
             </button>
+
             <button
               type="button"
               className={`tipo-btn ${form.tipo === 'admin' ? 'ativo' : ''}`}
@@ -69,8 +97,9 @@ const Cadastro = () => {
             </button>
           </div>
 
-          {/* Formulário de cadastro */}
+          {/* Formulário */}
           <form onSubmit={handleSubmit}>
+
             <div className="form-group">
               <label>Nome completo</label>
               <input
@@ -108,6 +137,7 @@ const Cadastro = () => {
               />
             </div>
 
+            {/* Campos extras (não enviados ao backend por enquanto) */}
             <div className="form-group">
               <label>Telefone</label>
               <input
@@ -116,7 +146,6 @@ const Cadastro = () => {
                 placeholder="(00) 00000-0000"
                 value={form.telefone}
                 onChange={handleChange}
-                required
               />
             </div>
 
@@ -128,22 +157,26 @@ const Cadastro = () => {
                 placeholder="Sua cidade"
                 value={form.cidade}
                 onChange={handleChange}
-                required
               />
             </div>
 
-            {/* Mensagem de erro */}
+            {/* Erro */}
             {erro && <p className="auth-erro">{erro}</p>}
 
-            <button type="submit" className="btn-primary auth-btn">
-              Criar conta como {form.tipo === 'admin' ? 'Administrador' : 'Cliente'}
+            <button type="submit" className="btn-primary auth-btn" disabled={loading}>
+              {loading
+                ? 'Cadastrando...'
+                : `Criar conta como ${form.tipo === 'admin' ? 'Administrador' : 'Cliente'}`
+              }
             </button>
+
           </form>
 
-          {/* Link para login */}
+          {/* Login */}
           <p className="auth-link">
             Já tem conta? <Link to="/login">Entrar</Link>
           </p>
+
         </div>
       </div>
     </div>
@@ -151,3 +184,4 @@ const Cadastro = () => {
 };
 
 export default Cadastro;
+
