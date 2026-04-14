@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import './Auth.css';
 
+import { useAuth } from '../context/AuthContext';
+
 const Login = () => {
   const navigate = useNavigate();
 
@@ -13,6 +15,7 @@ const Login = () => {
 
   const [erro, setErro] = useState('');
   const [loading, setLoading] = useState(false);
+  const { setUser } = useAuth();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -26,13 +29,8 @@ const Login = () => {
     try {
       const response = await fetch('http://localhost:8080/usuarios/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email: form.email,
-          senha: form.senha
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
       });
 
       if (!response.ok) {
@@ -42,13 +40,20 @@ const Login = () => {
 
       const usuario = await response.json();
 
-      // 🔐 salva usuário no localStorage
-      localStorage.setItem('usuario', JSON.stringify(usuario));
+      // ✅ Define o tipo corretamente
+      const tipo =
+        usuario.nivelAcesso?.nome === 'admin' ||
+        usuario.nivelAcesso?.id === 1
+          ? 'admin'
+          : 'cliente';
 
-      // 🔎 identifica tipo pelo nivelAcesso
-      const tipo = usuario.nivelAcesso?.id === 1 ? 'admin' : 'cliente';
+      // ✅ Salva o usuário com o tipo
+      const usuarioComTipo = { ...usuario, tipo };
+      setUser(usuarioComTipo);
 
-      // 🚀 redireciona
+      localStorage.setItem('usuario', JSON.stringify(usuarioComTipo));
+
+      // ✅ Redireciona corretamente
       navigate(tipo === 'admin' ? '/admin' : '/cliente');
 
     } catch (err) {
@@ -65,14 +70,12 @@ const Login = () => {
       <div className="auth-container">
         <div className="auth-card card">
 
-          {/* Header */}
           <div className="auth-header">
             <span className="auth-icone">🌸</span>
             <h2>Bem-vinda de volta!</h2>
             <p>Entre na sua conta para continuar</p>
           </div>
 
-          {/* Form */}
           <form onSubmit={handleSubmit}>
 
             <div className="form-group">
@@ -99,7 +102,6 @@ const Login = () => {
               />
             </div>
 
-            {/* Erro */}
             {erro && <p className="auth-erro">{erro}</p>}
 
             <button type="submit" className="btn-primary auth-btn" disabled={loading}>
@@ -108,14 +110,6 @@ const Login = () => {
 
           </form>
 
-          {/* Dica */}
-          <div className="auth-dica">
-            <p>🔑 Contas de teste:</p>
-            <small>Admin: admin@teste.com / 123456</small><br />
-            <small>Cliente: cliente@teste.com / 123456</small>
-          </div>
-
-          {/* Link */}
           <p className="auth-link">
             Não tem conta? <Link to="/cadastro">Cadastre-se</Link>
           </p>

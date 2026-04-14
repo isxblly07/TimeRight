@@ -8,8 +8,12 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Cadastro from './pages/Cadastro';
 import DashboardAdmin from './pages/DashboardAdmin';
+import CadastroSalao from './pages/CadastroSalao';
+import Painel from './pages/Painel';
 import DashboardCliente from './pages/DashboardCliente';
 import Perfil from './pages/Perfil';
+import Historico from './pages/Historico';
+import AtualizarSalao from './pages/AtualizarSalao';
 
 // Rota protegida: redireciona se não estiver logado ou tipo errado
 const RotaProtegida = ({ children, tipo }) => {
@@ -37,6 +41,21 @@ function App() {
               <DashboardAdmin />
             </RotaProtegida>
           } />
+          <Route path="/admin/cadastro-salao" element={
+            <RotaProtegida tipo="admin">
+              <CadastroSalao />
+            </RotaProtegida>
+          } />
+          <Route path="/admin/painel" element={
+            <RotaProtegida tipo="admin">
+              <Painel />
+            </RotaProtegida>
+          } />
+          <Route path="/admin/atualizar-salao" element={
+            <RotaProtegida tipo="admin">
+              <AtualizarSalao />
+            </RotaProtegida>
+          } />
 
           {/* Dashboard do cliente (protegido) */}
           <Route path="/cliente" element={
@@ -49,6 +68,13 @@ function App() {
           <Route path="/perfil" element={
             <RotaProtegida tipo="cliente">
               <Perfil />
+            </RotaProtegida>
+          } />
+
+          {/* Histórico de agendamentos do cliente (protegido) */}
+          <Route path="/historico" element={
+            <RotaProtegida tipo="cliente">
+              <Historico />
             </RotaProtegida>
           } />
 

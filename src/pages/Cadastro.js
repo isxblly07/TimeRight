@@ -11,8 +11,7 @@ const Cadastro = () => {
     email: '',
     senha: '',
     telefone: '',
-    cidade: '',
-    tipo: 'cliente',
+    tipo: 'cliente', // controla admin/cliente
   });
 
   const [erro, setErro] = useState('');
@@ -22,30 +21,32 @@ const Cadastro = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleTipo = (tipoSelecionado) => {
+    setForm({ ...form, tipo: tipoSelecionado });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setErro('');
     setLoading(true);
 
     try {
-      // 🔥 Mapeando dados para o backend
       const payload = {
         nome: form.nome,
-        username: form.email, // usando email como username
+        username: form.email,
         password: form.senha,
+        telefone: form.telefone, //  agora enviado também
         statusUsuario: "ATIVO",
         dataCadastro: new Date().toISOString(),
 
         nivelAcesso: {
-          id: form.tipo === 'admin' ? 1 : 2 // ajuste conforme seu banco
+          id: form.tipo === 'admin' ? 1 : 2
         }
       };
 
       const response = await fetch('http://localhost:8080/usuarios', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
       });
 
@@ -54,7 +55,7 @@ const Cadastro = () => {
         throw new Error(erroResponse.message || 'Erro ao cadastrar usuário');
       }
 
-      // Sucesso 🎉
+      // ✅ Redireciona conforme tipo
       navigate(form.tipo === 'admin' ? '/admin' : '/cliente');
 
     } catch (err) {
@@ -71,33 +72,33 @@ const Cadastro = () => {
       <div className="auth-container">
         <div className="auth-card card">
 
-          {/* Cabeçalho */}
+          {/* Header */}
           <div className="auth-header">
             <span className="auth-icone">✨</span>
             <h2>Criar conta</h2>
-            <p>Preencha os dados para se cadastrar</p>
+            <p>Preencha os dados</p>
           </div>
 
-          {/* Tipo de conta */}
+          {/* 🔥 SELETOR DE TIPO (ADMIN / CLIENTE) */}
           <div className="tipo-selector">
             <button
               type="button"
               className={`tipo-btn ${form.tipo === 'cliente' ? 'ativo' : ''}`}
-              onClick={() => setForm({ ...form, tipo: 'cliente' })}
+              onClick={() => handleTipo('cliente')}
             >
-              👤 Cliente
+               Cliente
             </button>
 
             <button
               type="button"
               className={`tipo-btn ${form.tipo === 'admin' ? 'ativo' : ''}`}
-              onClick={() => setForm({ ...form, tipo: 'admin' })}
+              onClick={() => handleTipo('admin')}
             >
-              💼 Administrador
+               Administrador
             </button>
           </div>
 
-          {/* Formulário */}
+          {/* Form */}
           <form onSubmit={handleSubmit}>
 
             <div className="form-group">
@@ -137,7 +138,6 @@ const Cadastro = () => {
               />
             </div>
 
-            {/* Campos extras (não enviados ao backend por enquanto) */}
             <div className="form-group">
               <label>Telefone</label>
               <input
@@ -149,18 +149,6 @@ const Cadastro = () => {
               />
             </div>
 
-            <div className="form-group">
-              <label>Cidade</label>
-              <input
-                type="text"
-                name="cidade"
-                placeholder="Sua cidade"
-                value={form.cidade}
-                onChange={handleChange}
-              />
-            </div>
-
-            {/* Erro */}
             {erro && <p className="auth-erro">{erro}</p>}
 
             <button type="submit" className="btn-primary auth-btn" disabled={loading}>
@@ -172,7 +160,7 @@ const Cadastro = () => {
 
           </form>
 
-          {/* Login */}
+          {/* Link */}
           <p className="auth-link">
             Já tem conta? <Link to="/login">Entrar</Link>
           </p>
@@ -184,4 +172,3 @@ const Cadastro = () => {
 };
 
 export default Cadastro;
-

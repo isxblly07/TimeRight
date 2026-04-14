@@ -1,52 +1,63 @@
-// Contexto de autenticação: gerencia o usuário logado em toda a aplicação
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const AuthContext = createContext(null);
 
-// Hook para acessar o contexto facilmente
+// Hook
 export const useAuth = () => useContext(AuthContext);
 
 export const AuthProvider = ({ children }) => {
-  // Estado do usuário logado (null = não logado)
-  const [user, setUser] = useState(null);
 
-  // Dados simulados de usuários (substitui banco de dados no frontend)
-  const [usuarios, setUsuarios] = useState([
-    { id: 1, nome: 'Admin Teste', email: 'admin@teste.com', senha: '123456', tipo: 'admin', telefone: '(11) 99999-0001', cidade: 'São Paulo' },
-    { id: 2, nome: 'Cliente Teste', email: 'cliente@teste.com', senha: '123456', tipo: 'cliente', telefone: '(11) 99999-0002', cidade: 'São Paulo' },
-  ]);
+  // ✅ Carrega usuário do localStorage ao iniciar
+  const [user, setUser] = useState(() => {
+    const usuarioSalvo = localStorage.getItem('usuario');
+    return usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
+  });
 
-  // Função de login: verifica email e senha
-  const login = (email, senha) => {
-    const encontrado = usuarios.find(u => u.email === email && u.senha === senha);
-    if (encontrado) {
-      setUser(encontrado);
-      return { sucesso: true, tipo: encontrado.tipo };
+  const [salao, setSalaoState] = useState(null);
+
+  // ✅ Sempre que user mudar, atualiza localStorage
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('usuario', JSON.stringify(user));
+    } else {
+      localStorage.removeItem('usuario');
     }
-    return { sucesso: false };
+  }, [user]);
+
+  // 🔐 LOGIN (agora recebe direto o usuário da API)
+  const login = (usuario) => {
+    setUser(usuario);
   };
 
-  // Função de cadastro: adiciona novo usuário
-  const cadastrar = (dados) => {
-    const existe = usuarios.find(u => u.email === dados.email);
-    if (existe) return { sucesso: false, mensagem: 'E-mail já cadastrado.' };
-    const novoUsuario = { ...dados, id: Date.now() };
-    setUsuarios(prev => [...prev, novoUsuario]);
-    setUser(novoUsuario);
-    return { sucesso: true, tipo: novoUsuario.tipo };
+  // 🚪 LOGOUT
+  const logout = () => {
+    setUser(null);
   };
 
-  // Função de atualizar perfil do usuário logado
+  // 👤 ATUALIZAR PERFIL
   const atualizarPerfil = (dados) => {
     setUser(prev => ({ ...prev, ...dados }));
-    setUsuarios(prev => prev.map(u => u.id === user.id ? { ...u, ...dados } : u));
   };
 
-  // Função de logout
-  const logout = () => setUser(null);
+  // 🏪 SALÃO
+  const salvarSalao = (dados) => setSalaoState({ ...dados, ativo: true });
+  const atualizarSalao = (dados) => setSalaoState(prev => ({ ...prev, ...dados }));
+  const desativarSalao = () => setSalaoState(prev => prev ? { ...prev, ativo: false } : null);
 
   return (
-    <AuthContext.Provider value={{ user, login, cadastrar, logout, atualizarPerfil }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser, // ✅ IMPORTANTE: expõe isso pro Login usar
+        login,
+        logout,
+        atualizarPerfil,
+        salao,
+        salvarSalao,
+        atualizarSalao,
+        desativarSalao
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -123,3 +123,8 @@
 .perfil-form-botoes .btn-secondary {
   flex: 1;
 }
+
+.perfil-btn-atualizar {
+  width: 100%;
+  margin-top: 20px;
+}
