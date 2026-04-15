@@ -43,6 +43,11 @@ const DashboardAdmin = () => {
             <strong>Atualizar Salão</strong>
             <span>Edite os dados do seu salão</span>
           </Link>
+          <Link to="/admin/usuarios" className="atalho-card">
+            <span className="atalho-icone">👥</span>
+            <strong>Gerenciar Usuários</strong>
+            <span>Inclua, edite, inative ou exclua perfis</span>
+          </Link>
           <button
             className="atalho-card atalho-card-btn"
             onClick={() => setConfirmDesativar(true)}
