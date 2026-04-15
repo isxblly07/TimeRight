@@ -1,21 +1,41 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
 const AuthContext = createContext(null);
 
-// Hook
 export const useAuth = () => useContext(AuthContext);
 
+// --- Reducer ---
+const initialState = {
+  user: (() => {
+    const salvo = localStorage.getItem('usuario');
+    return salvo ? JSON.parse(salvo) : null;
+  })(),
+  salao: null,
+};
+
+function authReducer(state, action) {
+  switch (action.type) {
+    case 'SET_USER':
+      return { ...state, user: action.payload };
+    case 'ATUALIZAR_PERFIL':
+      return { ...state, user: { ...state.user, ...action.payload } };
+    case 'LOGOUT':
+      return { ...state, user: null };
+    case 'SALVAR_SALAO':
+      return { ...state, salao: { ...action.payload, ativo: true } };
+    case 'ATUALIZAR_SALAO':
+      return { ...state, salao: { ...state.salao, ...action.payload } };
+    case 'DESATIVAR_SALAO':
+      return { ...state, salao: state.salao ? { ...state.salao, ativo: false } : null };
+    default:
+      return state;
+  }
+}
+
 export const AuthProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(authReducer, initialState);
+  const { user, salao } = state;
 
-  // ✅ Carrega usuário do localStorage ao iniciar
-  const [user, setUser] = useState(() => {
-    const usuarioSalvo = localStorage.getItem('usuario');
-    return usuarioSalvo ? JSON.parse(usuarioSalvo) : null;
-  });
-
-  const [salao, setSalaoState] = useState(null);
-
-  // ✅ Sempre que user mudar, atualiza localStorage
   useEffect(() => {
     if (user) {
       localStorage.setItem('usuario', JSON.stringify(user));
@@ -24,38 +44,26 @@ export const AuthProvider = ({ children }) => {
     }
   }, [user]);
 
-  // 🔐 LOGIN (agora recebe direto o usuário da API)
-  const login = (usuario) => {
-    setUser(usuario);
-  };
-
-  // 🚪 LOGOUT
-  const logout = () => {
-    setUser(null);
-  };
-
-  // 👤 ATUALIZAR PERFIL
-  const atualizarPerfil = (dados) => {
-    setUser(prev => ({ ...prev, ...dados }));
-  };
-
-  // 🏪 SALÃO
-  const salvarSalao = (dados) => setSalaoState({ ...dados, ativo: true });
-  const atualizarSalao = (dados) => setSalaoState(prev => ({ ...prev, ...dados }));
-  const desativarSalao = () => setSalaoState(prev => prev ? { ...prev, ativo: false } : null);
+  const setUser = (usuario) => dispatch({ type: 'SET_USER', payload: usuario });
+  const login = (usuario) => dispatch({ type: 'SET_USER', payload: usuario });
+  const logout = () => dispatch({ type: 'LOGOUT' });
+  const atualizarPerfil = (dados) => dispatch({ type: 'ATUALIZAR_PERFIL', payload: dados });
+  const salvarSalao = (dados) => dispatch({ type: 'SALVAR_SALAO', payload: dados });
+  const atualizarSalao = (dados) => dispatch({ type: 'ATUALIZAR_SALAO', payload: dados });
+  const desativarSalao = () => dispatch({ type: 'DESATIVAR_SALAO' });
 
   return (
     <AuthContext.Provider
       value={{
         user,
-        setUser, // ✅ IMPORTANTE: expõe isso pro Login usar
+        setUser,
         login,
         logout,
         atualizarPerfil,
         salao,
         salvarSalao,
         atualizarSalao,
-        desativarSalao
+        desativarSalao,
       }}
     >
       {children}
